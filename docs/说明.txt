@@ -1,0 +1,10 @@
+这个目录是「HS8546」独立作业用的工具包，已按型号配好：
+
+  ONT 使能工具：ONT_V300R017C00SPC218.exe
+  HW Dollar2.exe                 改 hw_boardinfo / hw_ctree（加解密 + 改 SN/MAC/界面）
+  华为光猫配置文件加解密工具.exe     XML/CFG 配置加解密
+  tftpd64.exe                    TFTP 服务器（导出/导入 hw_boardinfo、backKeybak 等）
+  putty.exe                      Telnet 客户端
+
+ONT 版本是按该型号固件世代选的；如果实际刷机时版本不对，可从
+01_华为\00_华为通用工具\ONT使能工具\ 取其它版本。
