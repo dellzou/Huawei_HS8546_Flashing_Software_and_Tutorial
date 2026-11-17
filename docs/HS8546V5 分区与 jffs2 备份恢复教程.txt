@@ -1,0 +1,212 @@
+HS8546V5 移动界面 分区、jffs2原厂备份数据 备份恢复教程  
+
+
+备份恢复方法有二种，一是用U盘，二是用TFTP软件
+
+特别提示：
+      1、必须补全shell
+      2、恢复分区和jffs2数据有变砖的风险，请谨慎！
+
+一、U盘备份恢复方法
+
+1、备份分区：
+将U盘（剩余空间大于1G）插入光猫后面的USB口
+Win+R — cmd    （按Windows徽标键和R键，输入cmd 进入命令窗口）
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+mount /dev/sda1 /mnt/usb  （挂载U盘）
+dd if=/dev/mtd0 of=/mnt/usb/0.bin  （备份分区0到U盘0.bin文件）
+dd if=/dev/mtd1 of=/mnt/usb/1.bin
+dd if=/dev/mtd2 of=/mnt/usb/2.bin
+dd if=/dev/mtd3 of=/mnt/usb/3.bin
+dd if=/dev/mtd4 of=/mnt/usb/4.bin
+dd if=/dev/mtd5 of=/mnt/usb/5.bin
+dd if=/dev/mtd6 of=/mnt/usb/6.bin
+dd if=/dev/mtd7 of=/mnt/usb/7.bin
+dd if=/dev/mtd8 of=/mnt/usb/8.bin
+dd if=/dev/mtd9 of=/mnt/usb/9.bin
+dd if=/dev/mtd10 of=/mnt/usb/10.bin
+dd if=/dev/mtd11 of=/mnt/usb/11.bin
+dd if=/dev/mtd12 of=/mnt/usb/12.bin
+
+单独备份jffs2和APP
+dd if=/dev/mtdblockubi0_9 of=/mnt/usb/0_9.bin
+dd if=/dev/mtdblockubi0_10 of=/mnt/usb/0_10.bin
+
+2、恢复分区:
+
+将所有备份文件复制到U盘，U盘插入光猫后面的USB口 
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+mount /dev/sda1 /mnt/usb
+dd if=/mnt/usb/0.bin of=/dev/mtdblock0  （恢复U盘0.bin文件到分区0）
+dd if=/mnt/usb/1.bin of=/dev/mtdblock1
+dd if=/mnt/usb/2.bin of=/dev/mtdblock2
+dd if=/mnt/usb/3.bin of=/dev/mtdblock3
+dd if=/mnt/usb/4.bin of=/dev/mtdblock4
+dd if=/mnt/usb/5.bin of=/dev/mtdblock5
+dd if=/mnt/usb/6.bin of=/dev/mtdblock6
+dd if=/mnt/usb/7.bin of=/dev/mtdblock7
+dd if=/mnt/usb/8.bin of=/dev/mtdblock8
+dd if=/mnt/usb/9.bin of=/dev/mtdblock9
+dd if=/mnt/usb/10.bin of=/dev/mtdblock10
+dd if=/mnt/usb/11.bin of=/dev/mtdblock11
+dd if=/mnt/usb/12.bin of=/dev/mtdblock12
+
+以上命令是恢复全部分区。
+
+单独恢复jffs2和APP
+
+dd if=/dev/mtdblockubi0_9 of=/mnt/usb/0_9.bin
+dd if=/dev/mtdblockubi0_10 of=/mnt/usb/0_10.bin
+
+reboot      (重启光猫)
+
+3、备份 jffs2文件夹
+
+U盘（剩余空间大于1G）插入光猫后面的USB口
+
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+cd /mnt/  （进入/mnt 目录）
+cp -r jffs2  /mnt/usb1_1/   (备份整个文件夹到U盘)
+
+4、恢复 jffs2文件夹
+
+将备份文件夹复制到U盘，U盘插入光猫后面的USB口
+
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+cd /mnt/usb1_1/  
+cp -r jffs2 /mnt/  (复制jffs2文件夹到mnt目录下，替换原jffs2文件夹)
+reboot 
+
+(PS:删除jffs2文件夹所有文件：rm -rf /mnt/jffs2/*     删除jffs2文件夹内所有文件和文件夹：rm -rf * )
+
+二、TFTP软件备份恢复方法
+
+注意：用此方法备份恢复比较繁琐，不建议用此方法！！！
+
+首先要打开TFTP软件，并设置好工作目录。
+
+1、备份分区
+
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+dd if=/dev/mtd0 of=/dev/shm/0.bin
+dd if=/dev/mtd1 of=/dev/shm/1.bin
+dd if=/dev/mtd2 of=/dev/shm/2.bin
+dd if=/dev/mtd3 of=/dev/shm/3.bin
+dd if=/dev/mtd4 of=/dev/shm/4.bin
+dd if=/dev/mtd5 of=/dev/shm/5.bin
+dd if=/dev/mtd6 of=/dev/shm/6.bin
+dd if=/dev/mtd7 of=/dev/shm/7.bin
+dd if=/dev/mtd8 of=/dev/shm/8.bin
+dd if=/dev/mtd9 of=/dev/shm/9.bin
+dd if=/dev/mtd10 of=/dev/shm/10.bin
+dd if=/dev/mtd11 of=/dev/shm/11.bin
+dd if=/dev/mtd12 of=/dev/shm/12.bin
+cd /dev/shm
+tftp -p -l 0.bin -r 0.bin 192.168.1.2  （复制文件到电脑TFTP目录 192.168.1.2 为IP地址）
+tftp -p -l 1.bin -r 1.bin 192.168.1.2
+tftp -p -l 2.bin -r 2.bin 192.168.1.2
+tftp -p -l 3.bin -r 3.bin 192.168.1.2
+tftp -p -l 4.bin -r 4.bin 192.168.1.2
+tftp -p -l 5.bin -r 5.bin 192.168.1.2
+tftp -p -l 6.bin -r 6.bin 192.168.1.2
+tftp -p -l 7.bin -r 7.bin 192.168.1.2
+tftp -p -l 8.bin -r 8.bin 192.168.1.2
+tftp -p -l 9.bin -r 9.bin 192.168.1.2
+tftp -p -l 10.bin -r 10.bin 192.168.1.2
+tftp -p -l 11.bin -r 11.bin 192.168.1.2
+tftp -p -l 12.bin -r 12.bin 192.168.1.2
+rm -rf *       (删除备份文件，否则空间不够)
+dd if=/dev/mtdblockubi0_9 of=/dev/shm/0_9.bin
+dd if=/dev/mtdblockubi0_10 of=/dev/shm/0_10.bin
+tftp -p -l 0_9.bin -r 0_9.bin 192.168.1.2
+tftp -p -l 0_10.bin -r 0_10.bin 192.168.1.2
+rm -rf *
+
+2、恢复分区
+
+telnet 192.168.1.1
+root
+adminHW 
+su
+shell
+cd /dev/shm
+tftp -g -l 0.bin -r 0.bin 192.168.1.2 (将电脑TFTP目录文件上传到光猫/dev/shm）
+tftp -g -l 1.bin -r 1.bin 192.168.1.2
+tftp -g -l 2.bin -r 2.bin 192.168.1.2
+tftp -g -l 3.bin -r 3.bin 192.168.1.2
+tftp -g -l 4.bin -r 4.bin 192.168.1.2
+tftp -g -l 5.bin -r 5.bin 192.168.1.2
+tftp -g -l 6.bin -r 6.bin 192.168.1.2
+tftp -g -l 7.bin -r 7.bin 192.168.1.2
+tftp -g -l 8.bin -r 8.bin 192.168.1.2
+tftp -g -l 9.bin -r 9.bin 192.168.1.2
+tftp -g -l 10.bin -r 10.bin 192.168.1.2
+tftp -g -l 11.bin -r 11.bin 192.168.1.2
+tftp -g -l 12.bin -r 12.bin 192.168.1.2
+dd if=/dev/shm/0.bin of=/dev/mtdblock0
+dd if=/dev/shm/1.bin of=/dev/mtdblock1 
+dd if=/dev/shm/2.bin of=/dev/mtdblock2
+dd if=/dev/shm/3.bin of=/dev/mtdblock3
+dd if=/dev/shm/4.bin of=/dev/mtdblock4
+dd if=/dev/shm/5.bin of=/dev/mtdblock5
+dd if=/dev/shm/6.bin of=/dev/mtdblock6
+dd if=/dev/shm/7.bin of=/dev/mtdblock7
+dd if=/dev/shm/8.bin of=/dev/mtdblock8
+dd if=/dev/shm/9.bin of=/dev/mtdblock9
+dd if=/dev/shm/10.bin of=/dev/mtdblock10
+dd if=/dev/shm/11.bin of=/dev/mtdblock11
+dd if=/dev/shm/12.bin of=/dev/mtdblock12
+rm -rf * 
+tftp -g -l 0_9.bin -r 0_9.bin 192.168.1.2
+tftp -g -l 0_10.bin -r 0_10.bin 192.168.1.2
+dd if=/dev/shm/0_9.bin of=/dev/mtdblockubi0_9
+dd if=/dev/shm/0_10.bin of=/dev/mtdblockubi0_10
+rm -rf * 
+reboot
+
+3、备份 jffs2文件夹:
+
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+cd /mnt/jffs2 
+tar -czf jffs2bak.tar.gz *     (压缩jffs2文件夹为 jffs2bak.tar.gz)
+mv /mnt/jffs2/jffs2bak.tar.gz /tmp （剪切jffs2bak.tar.gz文件到 /tmp文件夹）
+cd /tmp
+tftp -p -l jffs2bak.tar.gz -r jffs2bak.tar.gz 192.168.1.2
+
+4、恢复 jffs2:
+
+telnet 192.168.1.1
+root
+adminHW
+su
+shell
+cd /mnt/jffs2 
+rm -rf /mnt/jffs2/*       （删除jffs2文件夹内所有文件）
+tftp -g -l jffs2bak.tar.gz -r jffs2bak.tar.gz 192.168.1.2
+tar -xvf jffs2bak.tar.gz   （解压备份文件到当前文件夹）
+rm -rf jffs2bak.tar.gz
+reboot      
