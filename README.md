@@ -59,6 +59,19 @@ bd06ca5eee0baeddc6c9f20a9c8da4715524e2f5b11492f645a756fd6ec8f717  docs/说明.tx
 2. 挂载点在文中出现 `/mnt/usb` 与 `/mnt/usb1_1` 两个名字，实际以 `ls /mnt` 为准。
 3. TFTP 那节的 `rm -rf *` 没有前置 `cd`，删除范围取决于当前目录。
 
+## 相关仓库
+
+同品牌其它机型，命令体系或刷机思路相近，排障时可以互相参照；每个仓库开头都对应一篇文章：
+
+- [华为 F30 工具包](https://github.com/dellzou/Huawei_F30_Flashing_Software_and_Tutorial)：改 SN、改 MAC、取超密
+- [华为 H1s-3 / H2-3 工具包](https://github.com/dellzou/Huawei_H1s3_H2-3_Flashing_Software_and_Tutorial)：四条入口、确认码与改地区
+- [华为 HN8145X6 工具包](https://github.com/dellzou/Huawei_HN8145X6_Flashing_Software_and_Tutorial)：补全 AllShell、改光模
+- [华为 HN8145XR 工具包](https://github.com/dellzou/Huawei_HN8145XR_Flashing_Software_and_Tutorial)：主猫改公版、从猫组网
+- [华为 K662D 工具包](https://github.com/dellzou/Huawei_K662D_Flashing_Software_and_Tutorial)：从猫改光猫模式
+- [华为 V173-50 工具包](https://github.com/dellzou/Huawei_V173-50_Flashing_Software_and_Tutorial)：R24 装备包与 OBSCTool 日志
+- [华为 V173 工具包](https://github.com/dellzou/Huawei_V173_Flashing_Software_and_Tutorial)：补全 Shell、改公版、改 boardinfo
+- [华为 V175 工具包](https://github.com/dellzou/Huawei_V175_Flashing_Software_and_Tutorial)：R23 固件包开 Telnet
+
 ## 免责声明
 
 工具与教程原文均来自公开论坛资料，仅供自有设备维修与学习使用。写分区、写引导程序有变砖风险，`mtd0` 没有编程器不要碰。仓库不含任何真实设备的配置备份。
